@@ -94,6 +94,19 @@ model <- lm(ystar~xstar +0, data=owls3)
 plot(model)
 summary(model)
 
+extcdf = function(mu,sig2,d,tmax=50)
+{
+
+  G = numeric(tmax)
+  x=1:tmax
+  G = pnorm((-d-mu*x)/sqrt(sig2*x)) +
+    exp(-2*mu*d/sig2)* pnorm((-d+mu*x)/sqrt(sig2*x))
+}
+
+owl.cdf <- extcdf(mu = 0.04267, sig2 = (0.3396)^2, d = 10, tmax = 200)
+
+plot(owl.cdf)
+
 qt(0.975, 43)
 
 0.0224+2.02*0.0169
