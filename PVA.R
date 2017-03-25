@@ -76,18 +76,20 @@ summary(owl.model1)
 
 
 lambda_owl <- numeric()
-lambda_owl <- owls2$counts[-1]/owls2$counts[-169]
+lambda_owl <- owls2$counts[-1]/owls2$counts[-47]
 
-mu.owl <- sum(log(lambda_owl))/168
+mu.owl <- sum(log(lambda_owl))/47
 
 lamb.g <-exp(mu.owl)
 
-xstar <- sqrt(Bears$Year[-1]-Bears$Year[-45])
-xstar
-ystar <- (log(lambda_bear)/xstar)
-ystar  
+xstar <- diff(owls2$Y1)
+xstar[48] <- 0
+ystar <- (log(lambda_owl)/xstar)
+ystar[48] <- 0  
 
-model <- lm(ystar~xstar +0, data=Bears)
+owls3 <- cbind(owls2, xstar, ystar)
+
+model <- lm(ystar~xstar +0, data=owls3)
 
 plot(model)
 summary(model)
