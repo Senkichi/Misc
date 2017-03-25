@@ -43,5 +43,8 @@ owls2 <- owls %>%
   group_by(year) %>%
   summarise(counts = sum(counts), Y1 = (mean(year) - 1967))
 
+write.csv(owls, file = "owls2.csv")
+owls2 <- read.csv("owls2.csv")
+
 owl.model1 <- lm(counts ~ Y1, data = owls2)
 summary(owl.model1)
