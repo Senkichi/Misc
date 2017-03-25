@@ -41,4 +41,7 @@ AZ2 <- AZ %>%
 owls <- rbind.data.frame(AZ2, CO2, NM2, UT2)
 owls2 <- owls %>%
   group_by(year) %>%
-  summarise(counts = sum(counts))
+  summarise(counts = sum(counts), Y1 = (mean(year) - 1967))
+
+owl.model1 <- lm(counts ~ Y1, data = owls2)
+summary(owl.model1)
