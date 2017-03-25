@@ -45,23 +45,20 @@ owls2 <- owls %>%
 
 write.csv(owls, file = "owls2.csv")
 owls2 <- read.csv("owls2.csv")
+  owls2 <- owls2 %>%
+    group_by(year) %>%
+    summarise(counts = sum(counts), Y1 = (mean(year) - 1967))
 
 owl.model1 <- lm(counts ~ Y1, data = owls2)
 summary(owl.model1)
-lambda_bear <- numeric()
-lambda_bear <-Bears$N[-1]/Bears$N[-45]
 
-log(lambda_bear)
-sum(lambda_bear)
-mu.bear <- sum(log(lambda_bear))/44
-#or
-mean(log(lambda_bear))
 
-lamb.g <-exp(mu.bear)
-lamb.g
+lambda_owl <- numeric()
+lambda_owl <- owls2$counts[-1]/owls2$counts[-169]
 
-mu.bear
-var(log(lambda_bear))
+mu.owl <- sum(log(lambda_owl))/168
+
+lamb.g <-exp(mu.owl)
 
 xstar <- sqrt(Bears$Year[-1]-Bears$Year[-45])
 xstar
