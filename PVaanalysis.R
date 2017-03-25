@@ -6,3 +6,10 @@ NM <- read.csv("D:/Programs/GitHub/Misc/NMexico/NMexico.csv")
 UT <- read.csv("D:/Programs/GitHub/Misc/Utah/Utah.csv")
 CO <- read.csv("D:/Programs/GitHub/Misc/Colorad/Colorad.csv")
 Az <- read.csv("D:/Programs/GitHub/Misc/Arizona/Arizona.csv")
+
+##Gillian's paths
+NM <- read.csv("C:/Users/Gillian/Documents/GitHub/Misc/NMexico/NMexico.csv")
+UT <- read.csv("C:/Users/Gillian/Documents/GitHub/Misc/Utah/Utah.csv")
+CO <- read.csv("C:/Users/Gillian/Documents/GitHub/Misc/Colorad/Colorad.csv")
+Az <- read.csv("C:/Users/Gillian/Documents/GitHub/Misc/Arizona/Arizona.csv")
+
