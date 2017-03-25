@@ -46,27 +46,26 @@ owls2 <- owls %>%
 write.csv(owls, file = "owls2.csv")
 owls2 <- read.csv("owls2.csv")
 <<<<<<< HEAD
+<<<<<<< HEAD
 owls2
+=======
+>>>>>>> parent of 68cb482... Changes
 
 owl.model1 <- lm(counts ~ Y1, data = owls2)
 summary(owl.model1)
-
-
 lambda_bear <- numeric()
 lambda_bear <-Bears$N[-1]/Bears$N[-45]
 
-lambda_owl <- numeric()
-lambda_owl <- owls2$counts[-1]/owls2$counts[-169]
-
-log(lambda_owl)
-sum(lambda_owl)
-mu.owl <- sum(log(lambda_owl))/168
+log(lambda_bear)
+sum(lambda_bear)
+mu.bear <- sum(log(lambda_bear))/44
 #or
-mean(log(lambda_owl))
+mean(log(lambda_bear))
 
-lamb.g <-exp(mu.owl)
+lamb.g <-exp(mu.bear)
 lamb.g
 
+<<<<<<< HEAD
 mu.owl
 var(log(lambda_owl))
 =======
@@ -85,8 +84,12 @@ mu.owl <- sum(log(lambda_owl))/168
 
 lamb.g <-exp(mu.owl)
 >>>>>>> origin/master
+=======
+mu.bear
+var(log(lambda_bear))
+>>>>>>> parent of 68cb482... Changes
 
-xstar <- sqrt(owls2$Year[-1]-owls$Year[-169])
+xstar <- sqrt(Bears$Year[-1]-Bears$Year[-45])
 xstar
 ystar <- (log(lambda_bear)/xstar)
 ystar  
