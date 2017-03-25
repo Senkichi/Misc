@@ -1,6 +1,7 @@
-
+setwd("D:/Programs/GitHub/Misc")
 library(dplyr)
 library(tidyr)
+library(ggplot2)
 
 classes <- c("character", "numeric", "numeric","numeric","numeric","numeric","numeric","numeric","numeric","numeric","numeric","numeric","numeric","numeric","numeric","numeric","numeric","numeric","numeric","numeric","numeric","numeric")
 invert <- read.csv("Invertebrate ID.csv", header = T,  colClasses = classes)
@@ -40,7 +41,7 @@ ept.counts <- invert2 %>%
   
 ept.counts$Type <- type.vector  
 
-ept.model <- lm(EPT ~ Type, data = ept.counts)
+ept.model <- glm(EPT ~ Type, data = ept.counts, family = "poisson")
 summary(ept.model)
 
 site.richness <- invert2 %>%
@@ -50,5 +51,13 @@ site.richness <- invert2 %>%
 
 site.richness$Type <- type.vector
 
-richness.model <- lm(Richness ~ Type, data = site.richness)
+richness.model <- glm(Richness ~ Type, data = site.richness, family = "poisson")
 summary(richness.model)
+
+EPT.confint <- exp(confint(ept.model))
+EPT.confint
+richness.confint <- exp(confint(richness.model))
+richness.confint
+
+ggplot(ept.counts, aes(Type, EPT, color = Type)) + geom_boxplot() 
+ggplot(site.richness, aes(Type, Richness, color = Type)) + geom_boxplot()
