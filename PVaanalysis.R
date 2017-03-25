@@ -45,7 +45,6 @@ owls2 <- owls %>%
 
 write.csv(owls, file = "owls2.csv")
 owls2 <- read.csv("owls2.csv")
-<<<<<<< HEAD
 owls2
 
 owl.model1 <- lm(counts ~ Y1, data = owls2)
@@ -69,7 +68,6 @@ lamb.g
 
 mu.owl
 var(log(lambda_owl))
-=======
   owls2 <- owls2 %>%
     group_by(year) %>%
     summarise(counts = sum(counts), Y1 = (mean(year) - 1967))
@@ -84,7 +82,7 @@ lambda_owl <- owls2$counts[-1]/owls2$counts[-169]
 mu.owl <- sum(log(lambda_owl))/168
 
 lamb.g <-exp(mu.owl)
->>>>>>> origin/master
+
 
 xstar <- sqrt(owls2$Year[-1]-owls$Year[-169])
 xstar
