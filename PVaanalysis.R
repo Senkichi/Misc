@@ -48,3 +48,40 @@ owls2 <- read.csv("owls2.csv")
 
 owl.model1 <- lm(counts ~ Y1, data = owls2)
 summary(owl.model1)
+lambda_bear <- numeric()
+lambda_bear <-Bears$N[-1]/Bears$N[-45]
+
+log(lambda_bear)
+sum(lambda_bear)
+mu.bear <- sum(log(lambda_bear))/44
+#or
+mean(log(lambda_bear))
+
+lamb.g <-exp(mu.bear)
+lamb.g
+
+mu.bear
+var(log(lambda_bear))
+
+xstar <- sqrt(Bears$Year[-1]-Bears$Year[-45])
+xstar
+ystar <- (log(lambda_bear)/xstar)
+ystar  
+
+model <- lm(ystar~xstar +0, data=Bears)
+
+plot(model)
+summary(model)
+
+qt(0.975, 43)
+
+0.0224+2.02*0.0169
+0.0224-2.02*0.0169
+
+0.112^2#sigma squared
+qchisq(0.975, 43)
+qchisq(0.025, 43)
+43*0.0125
+0.5375/62.99
+0.5375/26.78
+
