@@ -63,7 +63,7 @@ mu.bear <- sum(log(lambda_bear))/44
 mean(log(lambda_bear))
 
 lamb.g <-exp(mu.bear)
-lamb.g
+
 
 mu.owl
 var(log(lambda_owl))
@@ -81,10 +81,6 @@ lambda_owl <- owls2$counts[-1]/owls2$counts[-169]
 mu.owl <- sum(log(lambda_owl))/168
 
 lamb.g <-exp(mu.owl)
-
-  mu.bear
-var(log(lambda_bear))
-
 
 xstar <- sqrt(Bears$Year[-1]-Bears$Year[-45])
 xstar
