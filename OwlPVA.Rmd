@@ -1,6 +1,6 @@
 ---
 title: "Spotted Owl PVA"
-author: "Samuel Martin"
+author: "Samuel Martin and Gillian Andersen"
 date: "March 28, 2017"
 output: pdf_document
 ---
@@ -11,6 +11,10 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r, echo=FALSE}
 library(ggplot2)
 ```
+**Background**
+
+The spotted owl is an owl species that resides in the western United States from Oregon all the way down to New Mexico and Arizona. Their habitat is mostly in old growth coniferous forests and some riparian areas. Many subspecies reside and nest in tree holes and perch on branches when hunting (Forsman et al., 1984). The Mexican Spotted Owl was first listed as threatened in 1993 under the Endangered Species Act, and there have been two amendments on their conservation plan (Howe, F. 2012). Since the spotted owl nests in tree holes of old growth forest, deforestation and wildfires are the main factors for loss of habitat and species decline (Howe, F. 2012). There is 8.4 million acres of critical habitat for the Mexican Spotted owl reserved on Federal Land in Colorado, New Mexico, Arizona and Utah. Logging practices, wildfires, as well as climate change threaten the populations of this species. Our populations study looks at the spotted owl populations in these areas and predicts whether the populations will be increasing in the next two centuries. 
+
 **Methods**
 
 Data were obtained from the USGS annual breeding bird survey in New Mexico, Utah, Colorado, and Arizona, and filtered for records pertaining to the Spotted Owl. Total species counts per year per state were summed and combined to create a representative yearly sample for the four state area. Lamda values of population growth were obtained by comparing count differences between years, which were then used to create the mu value by taking the mean value of lambda values transformed by application of the natural logarithm. An extinction CDF function was then run on a two century scale, presuming a quasi-extinction threshold of 10 owls, using values obtained from a linear regression of the change in log transformed lambda values by the change in time (yearly). 
