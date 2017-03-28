@@ -39,17 +39,18 @@ owl.cdf <- extcdf(mu = 0.04267, sig2 = (0.3396)^2, d = 10, tmax = 200)
 
 confint(model)
 ```
-```{r}
-owl.projections <- matrix(nrow = 200, ncol = 20)
-ricky[,1] <- 66
-for (j in 1:dim(ricky)[1]){
-  for (i in 2:dim(ricky)[2]) {
-    current.pop <- ricky[j,i-1]
-    ricky[j,i] = current.pop*rnorm(n=1, mean = 1.043593, )
-}
-}
-exp(0.04267)
+
+```{r, echo=FALSE}
+s2 <- (0.3396)^2
+s2
+(46*s2)/qchisq(0.975, 46)
+(46*s2)/qchisq(0.025, 46)
+crow <- c("Mu", "Variance")
+ccol <- c("Lower", "Estimate", "Upper")
+
+conftable <- data.frame(matrix(c(-0.05698135, 0.04267, 0.1423147, 0.07963632, 0.1153282, 0.1819302), nrow = 2, byrow = T, dimnames = list(crow, ccol)))
 ```
+
 
 **Results**
 
