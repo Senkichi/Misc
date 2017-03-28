@@ -10,6 +10,8 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 ```{r, echo=FALSE}
 library(ggplot2)
+library(popbio)
+library(stargazer)
 ```
 **Methods**
 
@@ -19,7 +21,9 @@ It is important to note that this population viability analysis (PVA) was conduc
 
 ```{r, echo=FALSE}
 owls3 <- read.csv("owls3.csv")
+
 model <- lm(ystar~xstar +0, data=owls3)
+summary(model)
 extcdf = function(mu,sig2,d,tmax=50)
 {
 
@@ -32,6 +36,19 @@ extcdf = function(mu,sig2,d,tmax=50)
 owl.cdf <- extcdf(mu = 0.04267, sig2 = (0.3396)^2, d = 10, tmax = 200)
   Year <- seq(from = 1, to = 200, by = 1)
     owl.cdf2 <- data.frame(cbind(Year, owl.cdf))
+
+confint(model)
+```
+```{r}
+owl.projections <- matrix(nrow = 200, ncol = 20)
+ricky[,1] <- 66
+for (j in 1:dim(ricky)[1]){
+  for (i in 2:dim(ricky)[2]) {
+    current.pop <- ricky[j,i-1]
+    ricky[j,i] = current.pop*rnorm(n=1, mean = 1.043593, )
+}
+}
+exp(0.04267)
 ```
 
 **Results**
@@ -39,4 +56,24 @@ owl.cdf <- extcdf(mu = 0.04267, sig2 = (0.3396)^2, d = 10, tmax = 200)
 ```{r}
 ggplot(data = owl.cdf2, aes(x = Year, y = owl.cdf)) + geom_point() + labs(y = "Probability", title = "Cumulative Probability of Extinction for the next 200 years")
 ```
+```{r}
+owl.bootstrap <- countCDFxt(mu = 0.04267, sig2 = (0.3396)^2, nt = 47, Nc = 66, Ne = 10, tmax = 200)
+```
+```{r}
+Lower <- numeric()
+Estimate <- numeric()
+Upper <- numeric()
 
+for(i in 1:20){
+  Lower[i] <- owl.bootstrap[i*10,2]
+  Estimate[i] <- owl.bootstrap[i*10,1]
+  Upper[i] <- owl.bootstrap[i*10,3]
+}
+year <- seq(from = 2023, to = 2213, by = 10)
+year
+Decennial <- cbind(year, Lower, Estimate, Upper)
+```
+
+```{r, results='asis'}
+stargazer(Decennial, title = "Decennial Cumulative Extinction Probabilities")
+```

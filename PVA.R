@@ -78,7 +78,7 @@ summary(owl.model1)
 
 lambda_owl <- numeric()
 lambda_owl <- owls2$counts[-1]/owls2$counts[-47]
-
+sd(lambda_owl)
 mu.owl <- sum(log(lambda_owl))/47
 
 lamb.g  <-exp(mu.owl)
