@@ -35,6 +35,6 @@ owl.cdf <- extcdf(mu = 0.04267, sig2 = (0.3396)^2, d = 10, tmax = 200)
 **Results**
 
 ```{r}
-ggplot(data = owl.cdf2, aes(x = Year, y = owl.cdf)) + geom_point() + labs(y = "Probability", title = "Cumulative Probability of Extinction for the next 200 Years")
+ggplot(data = owl.cdf2, aes(x = Year, y = owl.cdf)) + geom_point() + labs(y = "Probability", title = "Cumulative Probability of Extinction for the next 200 years")
 ```
 
