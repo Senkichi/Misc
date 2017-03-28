@@ -1,0 +1,15 @@
+---
+title: "Spotted Owl PVA"
+author: "Samuel Martin"
+date: "March 28, 2017"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+**Methods**
+
+Data were obtained from the USGS annual breeding bird survey in New Mexico, Utah, Colorado, and Arizona, and filtered for records pertaining to the Spotted Owl. Total species counts per year per state were summed and combined to create a representative yearly sample for the four state area. Lamda values of population growth were obtained by comparing count differences between years, which were then used to create the mu value by taking the mean value of lambda values transformed by application of the natural logarithm. An extinction CDF function was then run on a two century scale, presuming a quasi-extinction threshold of 10 owls, using values obtained from a linear regression of the change in log transformed lambda values by the change in time (yearly). 
+
