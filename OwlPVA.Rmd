@@ -8,8 +8,33 @@ output: pdf_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-
+```{r, echo=FALSE}
+library(ggplot2)
+```
 **Methods**
 
 Data were obtained from the USGS annual breeding bird survey in New Mexico, Utah, Colorado, and Arizona, and filtered for records pertaining to the Spotted Owl. Total species counts per year per state were summed and combined to create a representative yearly sample for the four state area. Lamda values of population growth were obtained by comparing count differences between years, which were then used to create the mu value by taking the mean value of lambda values transformed by application of the natural logarithm. An extinction CDF function was then run on a two century scale, presuming a quasi-extinction threshold of 10 owls, using values obtained from a linear regression of the change in log transformed lambda values by the change in time (yearly). 
+
+```{r, echo=FALSE}
+owls3 <- read.csv("owls3.csv")
+model <- lm(ystar~xstar +0, data=owls3)
+extcdf = function(mu,sig2,d,tmax=50)
+{
+
+  G = numeric(tmax)
+  x=1:tmax
+  G = pnorm((-d-mu*x)/sqrt(sig2*x)) +
+    exp(-2*mu*d/sig2)* pnorm((-d+mu*x)/sqrt(sig2*x))
+}
+
+owl.cdf <- extcdf(mu = 0.04267, sig2 = (0.3396)^2, d = 10, tmax = 200)
+  Year <- seq(from = 1, to = 200, by = 1)
+    owl.cdf2 <- data.frame(cbind(Year, owl.cdf))
+```
+
+**Results**
+
+```{r}
+ggplot(data = owl.cdf2, aes(x = Year, y = owl.cdf)) + geom_point() + labs(y = "Probability", title = "Cumulative Probability of Extinction for the next 200 Years")
+```
 
