@@ -12,12 +12,19 @@ knitr::opts_chunk$set(echo = TRUE)
 library(ggplot2)
 library(popbio)
 library(stargazer)
+library(car)
 ```
+**Background**
+
+	The spotted owl is an owl species that resides in the western United States from Oregon all the way down to New Mexico and Arizona. Their habitat is mostly in old growth coniferous forests and some riparian areas. Many subspecies reside and nest in tree holes and perch on branches when hunting (Forsman et al., 1984). The Mexican Spotted Owl was first listed as threatened in 1993 under the Endangered Species Act, and there have been two amendments on their conservation plan (Howe, F. 2012). Since the spotted owl nests in tree holes of old growth forest, deforestation and wildfires are the main factors for loss of habitat and species decline (Howe, F. 2012). There is 8.4 million acres of critical habitat for the Mexican Spotted owl reserved on Federal Land in Colorado, New Mexico, Arizona and Utah. Logging practices, wildfires, as well as climate change threaten the populations of this species. There have been many different kinds of population analysis studies on the spotted owl. Most of these studies have looked at specific factors, such as climate change, wildfires, and human encroachment, which would cause their decline (Seamans et al. 2002, Willey, D.W. 1998). The most important population studies are done by the Fish and Wildlife Service to determine whether the populations are currently threatened. These population analysis have mostly shown that the owl's populations are declining (Howe, F. 2012). Our populations study looks at the spotted owl populations in these areas and predicts whether the populations will be increasing in the next two centuries. 
+
 **Methods**
 
 Data were obtained from the USGS annual breeding bird survey in New Mexico, Utah, Colorado, and Arizona, and filtered for records pertaining to the Spotted Owl. Total species counts per year per state were summed and combined to create a representative yearly sample for the four state area. Lamda values of population growth were obtained by comparing count differences between years, which were then used to create the mu value by taking the mean value of lambda values transformed by application of the natural logarithm. An extinction CDF function was then run on a two century scale, presuming a quasi-extinction threshold of 10 owls, using values obtained from a linear regression of the change in log transformed lambda values by the change in time (yearly). 
 
-It is important to note that this population viability analysis (PVA) was conducted under the following assumptions: that current conditions will persist over the next two centuries, that observer error is minimal, and that the population growth rate is not or will not be influenced by population density. 
+It is important to note that this population viability analysis (PVA) was conducted under the following assumptions: that current conditions will persist over the next two centuries, that observer error is minimal, and that the population growth rate is not or will not be influenced by population density. The quasi extinction threshold used was a population of ten owls, based upon findings from relevant literature regarding the species.
+
+**The client is always wrong**
 
 ```{r, echo=FALSE}
 owls3 <- read.csv("owls3.csv")
@@ -50,17 +57,21 @@ ccol <- c("Lower", "Estimate", "Upper")
 
 conftable <- data.frame(matrix(c(-0.05698135, 0.04267, 0.1423147, 0.07963632, 0.1153282, 0.1819302), nrow = 2, byrow = T, dimnames = list(crow, ccol)))
 ```
+```{r, fig.cap= "Table 1", echo = F}
+conftable
+```
 
 
-**Results**
-
-```{r}
+The spotted owl population has a positive but not significant trend in its yearly population, (mu = 0.04267, pvalue = 0.393). Its growth is also uncertain, as shown in by Table 1 above. As the confidence interval includes 0, we cannot definitively state that the spotted owl population is growing. The variance is of mu is also given in the same table. 
+```{r, fig.cap='Figure 1. It is highly unlikely that the Spotted Owl population will hit the quasi-extinction threshold in the next 200 years.', echo = F}
 ggplot(data = owl.cdf2, aes(x = Year, y = owl.cdf)) + geom_point() + labs(y = "Probability", title = "Cumulative Probability of Extinction for the next 200 years")
 ```
-```{r}
+Figure 1 shows that the cumulative probability of extinction does not exceed .003 even on a two century timescale. Thus, you our client can rest easy regarding the fate of the Spotted Owls, providing that there are no massive habitat losses or severe climate shifts during that time.
+```{r, fig.asp='Figure 2. A confidence interval representing a projection based confidence interval of the cumulative extinction probability over the next 200 years.', echo = F}
 owl.bootstrap <- countCDFxt(mu = 0.04267, sig2 = (0.3396)^2, nt = 47, Nc = 66, Ne = 10, tmax = 200)
 ```
-```{r}
+Figure two shows a more conservative estimate of the cumulative probability of extinction for the Spotted Owl, complete with 95% confidence interval indicated by the red lines. Table 2 shows this confidence interval at decennial intervals. At no point does the population reach an equal chance of persisting or declining, as even with the more conservative estimate the chance of extinction does not exceed 1%.
+```{r, echo=FALSE}
 Lower <- numeric()
 Estimate <- numeric()
 Upper <- numeric()
@@ -75,6 +86,44 @@ year
 Decennial <- cbind(year, Lower, Estimate, Upper)
 ```
 
-```{r, results='asis'}
+```{r, results='asis', echo = F}
 stargazer(Decennial, title = "Decennial Cumulative Extinction Probabilities")
 ```
+
+**You know what they say about assumptions...**
+
+```{r, echo = F}
+log <- log(owls3$counts[2:48]/owls3$counts[1:47])
+  log[48] <- 0
+owls4 <- cbind(owls3, log)
+aintneednoman <- logLik(lm(data = owls4, log ~ 1))
+needaman <- logLik(lm(data = owls4, log ~ counts))
+
+indy <- -2*(-15.93)+ (2*1*47)/(47-1-1)
+deedee <- -2*(-14.9)+ (2*2*47)/(47-2-1)
+durbinWatsonTest(model)
+plot(cooks.distance(model))
+```
+The assumption of density independence was checked using AIC comparison of models fitted according to the Ricker model and a density independent model. The AIC of the density-dependent Ricker model is 34.07, and the AIC of the density independent model was 33.95. The assumption holds! The crowd goes mild! However, following Durbin-Watson analysis of the earlier model, our data does appear to be autocorrelated. Analysis using Cook's Distance reveals that our results are influenced by outliers.
+
+**Conclusion**
+
+We conclude that the Spotted Owl population in the four state area we examined, which represents most of the species' range, is not at risk. Barring extreme habitat changes, the Spotted Owls will remain viable for the next two centuries. This does not mean that conservation efforts for this species should be neglected. Moving forward, those concerned with this species should focus their efforts on preventing or mitigating large scale logging operations within this range, and the threat of catastrophic wildfire should be attended to. While our results tested positively for autocorrelation and outlier influence, the influence of these factors is not sufficient to fundamentally alter our findings. 
+
+
+**References**
+
+Forsman, E. D., Meslow, E. C., & Wight, H. M. (1984). Distribution and biology of the spotted owl in Oregon. Wildlife       Monographs, 3-64.
+
+Hlavac, Marek (2015). stargazer: Well-Formatted Regression and Summary Statistics Tables. R package version 5.2.            http://CRAN.R-project.org/package=stargazer
+
+Howe, F. (2012). Mexican Spotted Owl Recovery Plan, First Revision (Strix occidentalis lucida). US Fish and Wildlife         Service, Southwest Region.
+
+Seamans, M. E., Gutiérrez, R. J., & May, C. A. (2002). Mexican spotted owl (Strix occidentalis) population dynamics:         influence of climatic variation on survival and reproduction. The Auk, 119(2), 321-334.
+
+Stubben, C.J. and Milligan, B.G.  2007.  Estimating and Analyzing Demographic Models Using the popbio
+  Package in R.  Journal of Statistical Software 22:11.
+
+Wickham, H. (2009). ggplot2: Elegant Graphics for Data Analysis. Springer-Verlag New York.
+
+Willey, D.W. 1998a. Influence of fire on Mexican spotted owls in Saguaro National Park. Arizona Game and Fish Department, Final Report, Heritage Fund Program I96029, Phoenix, USA
